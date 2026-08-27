@@ -53,13 +53,15 @@ jobs:
         shell: bash
         run: |
           echo "=== Installing Dependencies via npm ci ==="
-          npm ci
+          npm ci --include=optional || npm install --include=optional --force
+          echo "=== Verifying Tauri CLI in node_modules ==="
+          npm list @tauri-apps/cli || npm install --save-dev @tauri-apps/cli @tauri-apps/cli-win32-x64-msvc
 
       - name: Verify Tauri CLI
         shell: bash
         run: |
           echo "=== Tauri CLI Version Check ==="
-          npm run tauri -- --version
+          npx tauri --version || npm run tauri -- --version
 
       - name: TypeScript Check
         shell: bash
